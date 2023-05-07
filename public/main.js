@@ -1,7 +1,6 @@
-var trash = document.getElementsByClassName("delete");
+const buttons = document.getElementsByClassName("delete");
 
-Array.from(trash).forEach(function(element) {
-  console.log('working')
+Array.from(buttons).forEach(function(element) {
       element.addEventListener('click', function(e){
         const _id = e.target.value
         console.log('working',_id)

@@ -1,7 +1,8 @@
 body{
   padding-top:80px;
   word-wrap:break-word;
-  background-image: url("img/luxurystore.jpg");
+  /* background-image: url("img/luxurystore.jpg"); */
+  background-color: violet;
   background-size: cover;
   background-repeat: no-repeat;
   color: black;
@@ -9,4 +10,35 @@ body{
 img{
   height: 200px;
 }
+.message input{
+  background: transparent;
+  border: none;
+}
 
+.message form{
+  display: flex;
+  flex-direction: column;
+}
+
+.count{
+  position: absolute;
+  background: white;
+  padding: 20px;
+  border-radius: 50%;
+  height: 50px;
+  right: 0;
+  top: -12px;
+}
+
+table{
+  width: 100%;
+}
+
+td, th{
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.hide{
+  display: none;
+}

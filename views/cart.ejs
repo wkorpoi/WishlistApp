@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title> My Personal Wishlist </title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+          <h3> Your Shopping Cart</h3>
+          <table class="messages">
+            <tr>
+            <th> item </th>
+            <th> price </th>
+            <th> discard </th>
+            </tr>
+          <% for(var i=0; i<cart.length; i++) {%>
+            <tr class="message">
+                <td><input name="title" value="<%= cart[i].title %>" readonly></td>
+                <td><input name="price" value="$<%= cart[i].price %>" readonly></td>
+                <td><button class="delete" value="<%= cart[i]._id%>" type="submit"> X </button></td>
+        </tr>
+          <% } %>
+        </table>
+
+
+</div>
+
+<script src="main.js"></script>
+<script src="server.js"></script>
+
+</body>
+</html>

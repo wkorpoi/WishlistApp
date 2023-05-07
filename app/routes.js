@@ -10,14 +10,38 @@ module.exports = function(app, passport, db) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
+        const jewelry = []
+        fetch('https://fakestoreapi.com/products/category/jewelery')
+        .then((res) => res.json())
+        .then((data) => {
+          data.forEach((item) => {
+
+            const info = {
+                title:item.title, 
+                price:item.price,
+                image:item.image,
+                rating:Math.round(item.rating.rate),
+            }
+            jewelry.push(info)
+          })
+        db.collection('cart').find({user:req.user.local.email}).toArray((err, cart) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
-            messages: result
+            cart, jewelry
+                  })  
           })
         })
     });
+    app.get('/cart', isLoggedIn, function(req, res) {
+      
+      db.collection('cart').find({user:req.user.local.email}).toArray((err, cart) => {
+        if (err) return console.log(err)
+        res.render('cart.ejs', {
+          cart
+                })  
+        })
+  });
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
@@ -29,13 +53,21 @@ module.exports = function(app, passport, db) {
 
 // message board routes ===============================================================
 
-    app.post('/messages', (req, res) => {
-      db.collection('messages').save({item: req.body.item, store: req.body.store, price: req.body.price}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/profile')
-      })
-    })
+    app.post('/add', (req, res) => {
+      console.log(req.body)
+      db.collection('cart').save(
+        {
+          title: req.body.title, 
+          user:req.user.local.email,
+          price: req.body.price
+        }, 
+        (err, result) => {
+        if (err) return console.log(err);
+        console.log('saved to database');
+        res.redirect('/profile');
+      }
+      );
+    });
 
     // app.put('/messages', (req, res) => {
     //   db.collection('messages')
@@ -53,8 +85,8 @@ module.exports = function(app, passport, db) {
     // })
 
     app.delete('/delete', (req, res) => {
-      console.log('working')
-      db.collection('messages').findOneAndDelete({_id:ObjectId(req.body._id)}, (err, result) => {
+      console.log(req.body)
+      db.collection('cart').findOneAndDelete({_id:ObjectId(req.body._id)}, (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })
